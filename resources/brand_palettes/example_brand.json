@@ -1,0 +1,14 @@
+{
+  "brand_name": "Sample Utility Client",
+  "primary_color": "#003366",
+  "secondary_color": "#f5f5f5",
+  "accent_color": "#ffcc00",
+  "palette": [
+    "#003366",
+    "#f5f5f5",
+    "#ffcc00"
+  ],
+  "notes": [
+    "Example brand palette for testing Tri\u2011Tender Core MCP."
+  ]
+}
