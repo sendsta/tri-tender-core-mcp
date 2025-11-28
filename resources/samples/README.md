@@ -1,0 +1,1 @@
+Place sample tender documents here for local testing. This folder is not required in production.\n
