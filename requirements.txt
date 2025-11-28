@@ -1,0 +1,7 @@
+fastmcp
+pypdf
+python-docx
+pandas
+openpyxl
+numpy
+pillow
