@@ -1,3 +1,4 @@
+from typing import Dict, Any, Optional, List
 from fastmcp import FastMCP, tool, Resource
 
 from tools.extract_metadata import extract_metadata
@@ -28,7 +29,7 @@ def detect_document(file: Resource) -> str:
 
 
 @tool
-def extract_tender_metadata(file: Resource) -> dict:
+def extract_tender_metadata(file: Resource) -> Dict[str, Any]:
     """
     Extract core tender metadata from the uploaded document.
 
@@ -39,13 +40,13 @@ def extract_tender_metadata(file: Resource) -> dict:
     - closing_date
     - summary
     - raw_text_excerpt
-    - detected_sections (list of {{name, snippet}})
+    - detected_sections (list of {name, snippet})
     """
     return extract_metadata(file.path)
 
 
 @tool
-def pricing_engine(file: Resource, user_inputs: dict | None = None) -> dict:
+def pricing_engine(file: Resource, user_inputs: Optional[Dict[str, Any]] = None) -> Dict[str, Any]:
     """
     Parse a pricing schedule (XLS/XLSX/CSV) and return a structured pricing model.
 
@@ -60,7 +61,7 @@ def pricing_engine(file: Resource, user_inputs: dict | None = None) -> dict:
 
 
 @tool
-def detect_brand(file: Resource) -> dict:
+def detect_brand(file: Resource) -> Dict[str, Any]:
     """
     Infer basic brand styling from a logo or a tender PDF.
 
@@ -76,15 +77,19 @@ def detect_brand(file: Resource) -> dict:
 
 
 @tool
-def compile_output(documents: list, brand: dict | None = None, pricing: dict | None = None) -> str:
+def compile_output(documents: List[Any], brand: Optional[Dict[str, Any]] = None, pricing: Optional[Dict[str, Any]] = None) -> str:
     """
     Compile the final tender response into a single HTML string.
 
-    documents: list of strings or dicts with {{"title", "html"}}.
+    documents: list of strings or dicts with {"title", "html"}.
     brand: output from detect_brand()
     pricing: output from pricing_engine()
     """
-    return compile_html(documents, brand or {}, pricing or {})
+    if brand is None:
+        brand = {}
+    if pricing is None:
+        pricing = {}
+    return compile_html(documents, brand, pricing)
 
 
 if __name__ == "__main__":

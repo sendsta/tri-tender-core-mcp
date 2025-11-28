@@ -1,31 +1,32 @@
-# Tri‑Tender Core MCP
+# Tri-Tender Core MCP (FastMCP Cloud Compatible)
 
-This is the **core FastMCP server** for the Tri‑Tender ecosystem.
+This is the **core FastMCP server** for the Tri-Tender ecosystem, updated
+to be compatible with Python 3.9+ (no `dict | None` syntax, only `Optional[...]`).
 
-It exposes a small, production‑ready set of tools that your LLM
+It exposes a small, production-ready set of tools that your LLM
 (ChatGPT / Dyad / custom agent) can call when a user uploads
-tender‑related documents.
+tender-related documents.
 
 ## Tools exposed
 
 - `detect_document(file)`  
-  Light‑weight classifier that returns a label like `tender`,
+  Light-weight classifier that returns a label like `tender`,
   `pricing_schedule`, `scope_of_work`, `terms_and_conditions`,
   `evaluation_criteria`, `compliance_document`, `brand_asset` or
   `unknown`.
 
 - `extract_tender_metadata(file)`  
-  Extracts high‑level tender metadata (title, reference number,
+  Extracts high-level tender metadata (title, reference number,
   buyer, closing date, summary, detected sections).
 
 - `pricing_engine(file, user_inputs)`  
   Reads XLS/XLSX/CSV pricing schedules and returns a structured
   JSON payload with column names, rows, and computed totals
-  (with optional mark‑up).
+  (with optional mark-up).
 
 - `detect_brand(file)`  
   Infers a very simple brand palette from an uploaded logo image
-  (PNG/JPG) or falls back to filename‑based heuristics.
+  (PNG/JPG) or falls back to filename-based heuristics.
 
 - `compile_output(documents, brand, pricing)`  
   Compiles the final tender response into a **single HTML** document
@@ -69,7 +70,7 @@ on how you launch it). See the FastMCP docs for exact instructions.
    - An API key
    - A test console to run tools
 
-Use those values inside Tri‑Tender / Dyad, for example:
+Use those values inside Tri-Tender / Dyad, for example:
 
 ```yaml
 mcpServers:
@@ -88,24 +89,18 @@ This folder is already structured as a clean repository:
 cd tri_tender_core_mcp
 git init
 git add .
-git commit -m "Initial Tri-Tender core MCP"
+git commit -m "Initial Tri-Tender core MCP (FastMCP Cloud compatible)"
+git branch -M main
 git remote add origin git@github.com:<you>/tri_tender_core_mcp.git
 git push -u origin main
 ```
 
 ---
 
-## Next steps / extensions
+## Notes
 
-- Add more advanced NLP‑based metadata extraction.
-- Extend `pricing_engine` with tender‑specific pricing rules.
-- Integrate risk scoring and compliance checks.
-- Wire this MCP together with:
-  - Tri‑Tender Brand MCP
-  - Tri‑Tender Pricing MCP
-  - Tri‑Tender Orchestrator MCP
-  - Tri‑Tender Compiler MCP
-
-This repo is intentionally **simple, readable and production‑safe**
-so you can evolve it as Tri‑Tender grows.
-"# tri-tender-core-mcp" 
+- All type hints are compatible with Python 3.9.
+- The server exposes `mcp = FastMCP(...)` at module level, which is
+  what FastMCP Cloud expects when loading the server.
+- You can safely extend tools without worrying about newer
+  syntax that might not be supported on the cloud runtime.
